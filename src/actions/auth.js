@@ -71,4 +71,16 @@ export const register = (name, email, password) => ({
         email,
         password
     }
+});
+
+export const startLogout = () => {
+    return async ( dispatch ) => {
+        await firebase.auth().signOut();
+
+        dispatch( logout() );
+    }
+}
+
+export const logout = () => ({
+    type: types.logout
 })

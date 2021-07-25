@@ -1,4 +1,15 @@
 
+.journal__app-title {
+    font-size: 2rem;
+    color: #FFF;
+    padding-bottom: 7px;
+    margin-bottom: 20px;
+
+    span {
+        font-weight: normal;
+        color: $secondary;
+    }
+}
 
 .journal__main-content {
     display: flex;
