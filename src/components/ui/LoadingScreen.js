@@ -7,7 +7,7 @@ export const LoadingScreen = () => {
             <div className="loading__lds-dual-ring">
             </div>
             <div className="loading__lds-text mt-5">
-                Cargando...
+                Loading...
             </div>
         </div>
     )

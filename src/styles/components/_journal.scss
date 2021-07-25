@@ -66,13 +66,7 @@
 }
 
 .journal__entry:hover {
-    .journal__entry-body {
-        background-color: darken($color: white, $amount: 10);
-    }
-
-    .journal__date-box {
-        background-color: darken($color: white, $amount: 10);
-    }
+    background-color: darken($color: white, $amount: 10);
 }
 
 .journal__entry-picture {

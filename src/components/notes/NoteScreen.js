@@ -1,7 +1,26 @@
-import React from 'react'
+import React, { useRef } from 'react'
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux'
+import { useForm } from '../../hooks/useForm';
 import { NotesAppBar } from './NotesAppBar'
 
 export const NoteScreen = () => {
+
+    const { active: note } = useSelector(state => state.notes);
+    const [ formValues, handleInputChange, reset ] = useForm( note );
+    const { body, title } = formValues;
+
+    const activeId = useRef( note.id );
+
+    useEffect(() => {
+        
+        if(note.id !== activeId.current ){
+            reset( note );
+            activeId.current = note.id;
+        }
+
+    }, [note, reset]);
+
     return (
         <div className="notes__main-content">
             
@@ -14,19 +33,28 @@ export const NoteScreen = () => {
                         placeholder="Some awesome title XD"
                         className="notes__title-input"
                         autoComplete="off"
+                        value={ title }
+                        onChange={ handleInputChange }
                     />
 
                     <textarea
                         placeholder="Whats happened today"
                         className="notes__textarea"
+                        value={ body }
+                        onChange={ handleInputChange }
                     ></textarea>
 
-                    <div className="notes__image">
-                        <img
-                            src="https://cdn.pixabay.com/photo/2017/07/24/19/57/tiger-2535888__340.jpg"
-                            alt="img"
-                        />
-                    </div>
+                    {
+                        (note.url) 
+                        && (
+                            <div className="notes__image">
+                                <img
+                                    src="https://cdn.pixabay.com/photo/2017/07/24/19/57/tiger-2535888__340.jpg"
+                                    alt="img"
+                                />
+                            </div>
+                        )
+                    }
                 
             </div>
 
