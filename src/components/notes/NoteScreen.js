@@ -1,14 +1,18 @@
 import React, { useRef } from 'react'
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { activeNote } from '../../actions/note';
 import { useForm } from '../../hooks/useForm';
-import { NotesAppBar } from './NotesAppBar'
+import { NotesAppBar } from './NotesAppBar';
+import { startDeleting } from '../../actions/note';
 
 export const NoteScreen = () => {
 
+    const dispatch = useDispatch();
+
     const { active: note } = useSelector(state => state.notes);
     const [ formValues, handleInputChange, reset ] = useForm( note );
-    const { body, title } = formValues;
+    const { body, title, id } = formValues;
 
     const activeId = useRef( note.id );
 
@@ -21,6 +25,18 @@ export const NoteScreen = () => {
 
     }, [note, reset]);
 
+    useEffect(() => {
+        
+        dispatch( activeNote(formValues.id, { ...formValues }) );
+
+    }, [formValues, dispatch]);
+
+
+    const handleDelete = () => {
+        
+        dispatch( startDeleting( id ) );
+    }
+
     return (
         <div className="notes__main-content">
             
@@ -29,17 +45,19 @@ export const NoteScreen = () => {
             <div className="notes__content">
                 
                     <input
-                        type="text"
+                        autoComplete="off"
+                        name="title"
                         placeholder="Some awesome title XD"
                         className="notes__title-input"
-                        autoComplete="off"
+                        type="text"
                         value={ title }
                         onChange={ handleInputChange }
                     />
 
                     <textarea
-                        placeholder="Whats happened today"
                         className="notes__textarea"
+                        name="body"
+                        placeholder="Whats happened today"
                         value={ body }
                         onChange={ handleInputChange }
                     ></textarea>
@@ -49,7 +67,7 @@ export const NoteScreen = () => {
                         && (
                             <div className="notes__image">
                                 <img
-                                    src="https://cdn.pixabay.com/photo/2017/07/24/19/57/tiger-2535888__340.jpg"
+                                    src={note.url}
                                     alt="img"
                                 />
                             </div>
@@ -57,6 +75,13 @@ export const NoteScreen = () => {
                     }
                 
             </div>
+
+            <button
+                className="btn btn-danger"
+                onClick={ handleDelete }
+            >
+                Delete
+            </button>
 
         </div>
     )
